@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "express": "^5.2.1"
+  },
+  "name": "backend-mean-m1",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "devDependencies": {
+    "nodemon": "^3.1.11"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JossElito179/backend-mean-m1.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/JossElito179/backend-mean-m1/issues"
+  },
+  "homepage": "https://github.com/JossElito179/backend-mean-m1#readme"
+}

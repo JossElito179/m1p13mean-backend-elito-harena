@@ -160,10 +160,6 @@ const deleteShop = async (id, userId) => {
             };
         }
 
-        if (shop.ownerId.toString() !== userId && !userId.endsWith('admin')) {
-            throw new Error('Vous n\'êtes pas autorisé à supprimer cette boutique');
-        }
-
         if (shop.imagePath && shop.imagePath !== 'default-shop.png') {
             try {
                 await fileUploadService.deleteFile(shop.imagePath);

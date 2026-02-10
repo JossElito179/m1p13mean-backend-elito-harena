@@ -5,6 +5,7 @@ const database = require('./src/config/database');
 const authRoutes = require('./src/routes/auth.routes');
 const categoryRoutes =  require('./src/routes/category.routes');
 const shopRoutes = require('./src/routes/shop.routes');
+const productRoutes = require('./src/routes/product.routes');
 
 const app = express();
 
@@ -17,6 +18,7 @@ const dbStatus = database.getStatus();
 app.use('/api/auth', authRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/shops', shopRoutes);
+app.use('/api/product', productRoutes);
 
 
 app.get('/', (req, res) => {

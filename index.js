@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const database = require('./src/config/database');
 const authRoutes = require('./src/routes/authRoutes');
+const categoryRoutes =  require('./src/routes/categoryRoutes')
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.urlencoded({ extended: true }));
 const dbStatus = database.getStatus();
 
 app.use('/api/auth', authRoutes);
+app.use('/api/category', categoryRoutes);
+
 
 app.get('/', (req, res) => {
     res.json({

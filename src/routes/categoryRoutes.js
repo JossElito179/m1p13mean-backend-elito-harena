@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const categoryController = require('../controllers/category.controller');
+const authMiddleware = require('../middleware/auth')
 
 const validateCategoryUpdate = (req, res, next) => {
     const { code, label } = req.body;
@@ -42,6 +43,8 @@ const validateIdParam = (req, res, next) => {
     
     next();
 };
+
+router.use(authMiddleware);
 
 router.get('/', categoryController.getAllCategories);
 

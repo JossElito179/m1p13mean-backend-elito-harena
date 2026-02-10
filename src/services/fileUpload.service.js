@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 
 class FileUploadService {
-    constructor(bucketName = 'mean-img-host') {
+    constructor(bucketName = 'shops') {
         this.bucketName = bucketName;
         this.ensureBucketExists();
     }

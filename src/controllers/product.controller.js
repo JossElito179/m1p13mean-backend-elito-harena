@@ -1,4 +1,5 @@
 const productService = require('../services/product.service');
+const Shop = require('../models/shop.model')
 
 const createProduct = async (req, res) => {
     try {
@@ -86,9 +87,19 @@ const getProductsPaginated = async (req, res) => {
             sortBy
         };
 
-        if (req.user && shopId) {
-            delete filters.status;
-        }
+        Object.keys(filters).forEach(key => 
+            (filters[key] === undefined || filters[key] === null) && delete filters[key]
+        );
+
+        // if (req.user && req.user.role === 'ADMIN' && shopId) {
+        //     const shop = await Shop.findOne({ _id: shopId, userId: req.user.id });
+        //     if (!shop) {
+        //         return res.status(403).json({
+        //             success: false,
+        //             message: 'Vous n\'êtes pas autorisé à voir les produits de cette boutique'
+        //         });
+        //     }
+        // }
 
         const result = await productService.findProductsPaginated(filters, page, limit);
 
@@ -102,7 +113,7 @@ const getProductsPaginated = async (req, res) => {
         console.error('Error in getProductsPaginated controller:', error);
         res.status(500).json({
             success: false,
-            message: error.message
+            message: error.message || 'Erreur serveur lors de la récupération des produits'
         });
     }
 };

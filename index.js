@@ -2,9 +2,10 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const database = require('./src/config/database');
+const userRoutes = require('./src/routes/user.routes');
 const authRoutes = require('./src/routes/auth.routes');
-const categoryRoutes =  require('./src/routes/category.routes');
 const shopRoutes = require('./src/routes/shop.routes');
+const categoryRoutes =  require('./src/routes/category.routes');
 const productRoutes = require('./src/routes/product.routes');
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.urlencoded({ extended: true }));
 const dbStatus = database.getStatus();
 
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/category', categoryRoutes);
 app.use('/api/shops', shopRoutes);
 app.use('/api/product', productRoutes);

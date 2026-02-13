@@ -98,9 +98,15 @@ const getCategoryById = async (req, res) => {
 
 const getCategoriesPaginated = async (req, res) => {
     try {
-        const { page = 1, limit = 10 } = req.query;
+        const { page = 1, limit = 10, code, label, isActive } = req.query;
         
-        const result = await categoryService.findAllCategoryPaginated(page, limit);
+        const result = await categoryService.findAllCategoryPaginated(
+            page, 
+            limit, 
+            code, 
+            label, 
+            isActive
+        );
         
         res.status(200).json({
             success: true,

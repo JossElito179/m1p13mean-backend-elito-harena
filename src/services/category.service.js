@@ -63,19 +63,29 @@ const findById = async (_id) => {
     }
 }
 
-const findAllCategoryPaginated = async (page = 1, limit = 10) => {
+const findAllCategoryPaginated = async (page = 1, limit = 10, code, label, isActive) => {
     try {
         const pageNum = parseInt(page);
         const limitNum = parseInt(limit);
         const skip = (pageNum - 1) * limitNum;
 
-        const total = await Category.countDocuments({
-            deletedAt: null
-        });
+        const filter = { deletedAt: null };
 
-        const categories = await Category.find({
-            deletedAt: null
-        })
+        if (code) {
+            filter.code = { $regex: code, $options: 'i' }; 
+        }
+        
+        if (label) {
+            filter.label = { $regex: label, $options: 'i' };
+        }
+        
+        if (isActive !== undefined && isActive !== null) {
+            filter.isActive = isActive === 'true' || isActive === true;
+        }
+
+        const total = await Category.countDocuments(filter);
+
+        const categories = await Category.find(filter)
             .sort({ label: 1 })
             .skip(skip)
             .limit(limitNum)

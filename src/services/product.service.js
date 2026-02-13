@@ -135,48 +135,82 @@ const findProductsPaginated = async (filters = {}, page = 1, limit = 10) => {
         }
 
         if (filters.category) {
-            filter.categories = { $in: [filters.category.toUpperCase()] };
+            filter.categories = { 
+                $in: [new RegExp(filters.category, 'i')] 
+            };
         }
 
         if (filters.minPrice !== undefined) {
-            filter.price = { $gte: parseFloat(filters.minPrice) };
+            const minPrice = parseFloat(filters.minPrice);
+            if (!isNaN(minPrice)) {
+                filter.price = { $gte: minPrice };
+            }
         }
 
         if (filters.maxPrice !== undefined) {
-            filter.price = { ...filter.price, $lte: parseFloat(filters.maxPrice) };
+            const maxPrice = parseFloat(filters.maxPrice);
+            if (!isNaN(maxPrice)) {
+                filter.price = { 
+                    ...filter.price, 
+                    $lte: maxPrice 
+                };
+            }
         }
 
-        if (filters.inStock === 'true') {
-            filter.stock = { $gt: 0 };
+        if (filters.inStock !== undefined && filters.inStock !== null) {
+            const inStock = filters.inStock === 'true' || filters.inStock === true;
+            filter.stock = inStock ? { $gt: 0 } : { $eq: 0 };
         }
 
         if (filters.search) {
-            filter.$text = { $search: filters.search };
+            filter.$or = [
+                { name: { $regex: filters.search, $options: 'i' } },
+                { description: { $regex: filters.search, $options: 'i' } },
+                { categories: { $in: [new RegExp(filters.search, 'i')] } }
+            ];
         }
 
         const sortOptions = {};
         if (filters.sortBy) {
             const [field, order] = filters.sortBy.split(':');
-            sortOptions[field] = order === 'desc' ? -1 : 1;
+            const validSortFields = ['price', 'name', 'createdAt', 'stock', 'status'];
+            if (validSortFields.includes(field)) {
+                sortOptions[field] = order === 'desc' ? -1 : 1;
+            } else {
+                sortOptions.createdAt = -1; 
+            }
         } else {
-            sortOptions.createdAt = -1;
+            sortOptions.createdAt = -1; 
         }
 
         const [total, products] = await Promise.all([
             Product.countDocuments(filter),
             Product.find(filter)
-                .populate('shop', 'name location')
+                .populate({
+                    path: 'shopId',
+                    select: 'name location logo status'
+                })
                 .sort(sortOptions)
                 .skip(skip)
                 .limit(limitNum)
                 .select('-__v')
         ]);
 
+        const enrichedProducts = products.map(product => {
+            const productObj = product.toObject();
+            return {
+                ...productObj,
+                inStock: product.stock > 0,
+                totalValue: product.price * product.stock,
+                imageCount: product.imagePaths?.length || 0
+            };
+        });
+
         const totalPages = Math.ceil(total / limitNum);
 
         return {
             success: true,
-            data: products,
+            data: enrichedProducts,
             pagination: {
                 page: pageNum,
                 limit: limitNum,
@@ -190,7 +224,6 @@ const findProductsPaginated = async (filters = {}, page = 1, limit = 10) => {
         throw new Error('Erreur lors de la récupération des produits');
     }
 };
-
 const updateProduct = async (id, updateData, userId, files = null) => {
     try {
         const product = await Product.findOne({

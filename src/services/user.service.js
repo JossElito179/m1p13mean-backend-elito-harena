@@ -40,7 +40,7 @@ const findShopUsers = async (filters = {}) => {
 
         const enrichedUsers = await Promise.all(
             users.map(async (user) => {
-                const shops = await Shop.find({ userId: user._id, deletedAt: null })
+                const shops = await Shop.find({ ownerId: user._id, deletedAt: null })
                     .select('name location status logo productsCount')
                     .lean();
 

@@ -38,8 +38,6 @@ const updateShop = async (req, res) => {
     try {
         const { id } = req.params;
         const updateData = req.body;
-        console.log(req.body)
-
         const userId = updateData.ownerId;
         const imageFile = req.file;
 

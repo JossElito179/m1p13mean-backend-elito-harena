@@ -7,6 +7,9 @@ const authRoutes = require('./src/routes/auth.routes');
 const shopRoutes = require('./src/routes/shop.routes');
 const categoryRoutes =  require('./src/routes/category.routes');
 const productRoutes = require('./src/routes/product.routes');
+const cartRoutes = require('./src/routes/carts.routes')
+const orderRoutes = require('./src/routes/order.routes')
+
 
 const app = express();
 
@@ -16,11 +19,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const dbStatus = database.getStatus();
 
-app.use('/api/auth', authRoutes);
-app.use('/api/users', userRoutes);
-app.use('/api/category', categoryRoutes);
-app.use('/api/shops', shopRoutes);
-app.use('/api/product', productRoutes);
+app.use('/api/v2/auth', authRoutes);
+app.use('/api/v2/users', userRoutes);
+app.use('/api/v2/category', categoryRoutes);
+app.use('/api/v2/shops', shopRoutes);
+app.use('/api/v2/product', productRoutes);
+app.use('/api/v2/cart', cartRoutes);
+app.use('/api/v2/orders', orderRoutes);
 
 
 app.get('/', (req, res) => {

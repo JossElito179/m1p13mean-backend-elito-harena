@@ -25,16 +25,9 @@ const upload = multer({
 });
 
 const parseProductFormData = (req, res, next) => {
+    // Only specify file fields - text fields are automatically parsed into req.body
     upload.fields([
-        { name: 'images', maxCount: 10 },
-        { name: 'name', maxCount: 1 },
-        { name: 'description', maxCount: 1 },
-        { name: 'shopId', maxCount: 1 },
-        { name: 'price', maxCount: 1 },
-        { name: 'currency', maxCount: 1 },
-        { name: 'stock', maxCount: 1 },
-        { name: 'status', maxCount: 1 },
-        { name: 'categories', maxCount: 10 } 
+        { name: 'images', maxCount: 10 }
     ])(req, res, (err) => {
         if (err) {
             console.error('Multer error:', err);

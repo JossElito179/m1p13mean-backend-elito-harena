@@ -9,7 +9,7 @@ const categoryRoutes =  require('./src/routes/category.routes');
 const productRoutes = require('./src/routes/product.routes');
 const cartRoutes = require('./src/routes/carts.routes')
 const orderRoutes = require('./src/routes/order.routes')
-
+const dashboardRoutes = require('./src/routes/dashboard.routes')
 
 const app = express();
 
@@ -26,6 +26,8 @@ app.use('/api/v2/shops', shopRoutes);
 app.use('/api/v2/product', productRoutes);
 app.use('/api/v2/cart', cartRoutes);
 app.use('/api/v2/orders', orderRoutes);
+app.use('/api/v2/dashboard', dashboardRoutes);
+
 
 
 app.get('/', (req, res) => {

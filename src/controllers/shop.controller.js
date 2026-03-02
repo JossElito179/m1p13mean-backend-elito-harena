@@ -289,7 +289,7 @@ const searchShops = async (req, res) => {
             ...filters,
             deletedAt: null
         })
-            .populate('owner', 'name email')
+            .populate('owner', 'profile email')
             .limit(20)
             .select('-__v');
 

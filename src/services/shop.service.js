@@ -309,6 +309,28 @@ const findAllShops = async (filters = {}) => {
 };
 
 
+const findShopByUserId = async (ownerId) => {
+    try {
+        const shop = await Shop.findOne({
+            ownerId,
+            deletedAt: null
+        });
+
+        if (!shop) {
+            return {
+                success: false,
+                message: 'Boutique non trouvée'
+            };
+        }
+
+        return shop;
+
+    } catch (error) {
+        console.error('Error in findShopByUserId service:', error);
+        throw new Error('Erreur lors de la récupération de la boutique');
+    }
+};
+
 const getShopStats = async () => {
     try {
         const stats = await Shop.aggregate([
@@ -376,6 +398,7 @@ const getShopStats = async () => {
 module.exports = {
     createShop,
     findShopById,
+    findShopByUserId,
     findAllShopsPaginated,
     findAllShops,
     updateShop,

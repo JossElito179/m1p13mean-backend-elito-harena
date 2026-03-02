@@ -1,6 +1,7 @@
 const Product = require('../models/product.model');
 const ProductUploadService = require('./productUpload.service');
 const Shop = require('../models/shop.model');
+const mongoose = require('mongoose');
 
 const uploadService = new ProductUploadService();
 
@@ -19,9 +20,10 @@ const createProduct = async (productData, files, userId) => {
                 deletedAt: null
             });
         } else if (userId) {
-            // Look up shop by owner
+            // Look up shop by owner - convert userId string to ObjectId
+            const ownerObjectId = new mongoose.Types.ObjectId(userId);
             shop = await Shop.findOne({
-                ownerId: userId,
+                ownerId: ownerObjectId,
                 deletedAt: null
             });
             if (shop) {

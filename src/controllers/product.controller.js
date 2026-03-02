@@ -4,7 +4,7 @@ const createProduct = async (req, res) => {
     try {
         const productData = req.body;
         const files = req.files || [];
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         const result = await productService.createProduct(productData, files, userId);
 
@@ -35,7 +35,7 @@ const createProduct = async (req, res) => {
 const getProductById = async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.user?._id || null;
+        const userId = req.user?.id || null;
 
         const result = await productService.findProductById(id, userId);
 
@@ -111,7 +111,7 @@ const updateProduct = async (req, res) => {
     try {
         const { id } = req.params;
         const updateData = req.body;
-        const userId = req.user._id;
+        const userId = req.user.id;
         const files = req.files || [];
 
         const result = await productService.updateProduct(id, updateData, userId, files);
@@ -143,7 +143,7 @@ const updateProduct = async (req, res) => {
 const deleteProduct = async (req, res) => {
     try {
         const { id } = req.params;
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         const result = await productService.deleteProduct(id, userId);
 
@@ -181,7 +181,7 @@ const addImages = async (req, res) => {
     try {
         const { id } = req.params;
         const files = req.files || [];
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         if (files.length === 0) {
             return res.status(400).json({
@@ -225,7 +225,7 @@ const addImages = async (req, res) => {
 const deleteImage = async (req, res) => {
     try {
         const { id, imageIndex } = req.params;
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         const index = parseInt(imageIndex);
         if (isNaN(index) || index < 0) {
@@ -271,7 +271,7 @@ const deleteImage = async (req, res) => {
 const getStats = async (req, res) => {
     try {
         const { shopId } = req.query;
-        const userId = req.user._id;
+        const userId = req.user.id;
 
         const result = await productService.getProductStats(shopId, userId);
 

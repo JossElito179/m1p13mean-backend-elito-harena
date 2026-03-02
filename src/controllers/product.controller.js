@@ -19,7 +19,7 @@ const createProduct = async (req, res) => {
         console.error('Error in createProduct controller:', error);
         
         const errorMap = {
-            'Nom, prix et boutique sont obligatoires': 400,
+            'Nom et prix sont obligatoires': 400,
             'Boutique non trouvée ou accès non autorisé': 403,
             'Erreur lors de l\'upload des images': 500
         };

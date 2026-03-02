@@ -6,14 +6,28 @@ const uploadService = new ProductUploadService();
 
 const createProduct = async (productData, files, userId) => {
     try {
-        if (!productData.name || !productData.price || !productData.shopId) {
-            throw new Error('Nom, prix et boutique sont obligatoires');
+        if (!productData.name || !productData.price) {
+            throw new Error('Nom et prix sont obligatoires');
         }
 
-        const shop = await Shop.findOne({
-            _id: productData.shopId,
-            deletedAt: null
-        });
+        let shop;
+        
+        // If shopId is provided, use it; otherwise look up shop by ownerId
+        if (productData.shopId) {
+            shop = await Shop.findOne({
+                _id: productData.shopId,
+                deletedAt: null
+            });
+        } else if (userId) {
+            // Look up shop by owner
+            shop = await Shop.findOne({
+                ownerId: userId,
+                deletedAt: null
+            });
+            if (shop) {
+                productData.shopId = shop._id;
+            }
+        }
 
         if (!shop) {
             throw new Error('Boutique non trouvée ou accès non autorisé');

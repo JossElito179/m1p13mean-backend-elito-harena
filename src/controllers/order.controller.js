@@ -1,4 +1,5 @@
 const orderService = require('../services/order.service');
+const shopService = require('../services/shop.service')
 
 class OrderController {
     
@@ -70,16 +71,20 @@ class OrderController {
 
     async getShopOrders(req, res, next) {
         try {
-            const { role, shopId } = req.user;
+            const { role, shopId, id } = req.user;
             
-            if (role !== 'SHOP' || !shopId) {
+            const shop = await shopService.findShopByUserId( id )
+
+           console.log(req.user)
+            
+            if (role !== 'SHOP' || !shop) {
                 return res.status(403).json({
                     error: 'Accès réservé aux boutiques'
                 });
             }
 
             const queryParams = req.query;
-            const result = await orderService.getShopOrders(shopId, queryParams);
+            const result = await orderService.getShopOrders(shop._id, queryParams);
 
             res.json({
                 success: true,

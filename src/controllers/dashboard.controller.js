@@ -79,6 +79,24 @@ class DashboardController {
       });
     }
   }
+
+  async getAdminDashboard (req, res) {
+  try {
+    const stats = await DashboardService.getAdminStats();
+    
+    res.status(200).json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Erreur lors de la récupération du tableau de bord admin',
+      error: error.message
+    });
+  }
+}
+
 }
 
 module.exports = new DashboardController();

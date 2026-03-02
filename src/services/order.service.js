@@ -139,7 +139,7 @@ class OrderService {
 
         const [data, totalItems] = await Promise.all([
             Order.find(filter)
-                .populate('userId', 'name email')
+                .populate('userId', 'profile.name shopId email')
                 .sort(sort)
                 .skip(skip)
                 .limit(limitNum)
@@ -238,10 +238,12 @@ class OrderService {
             updatedAt: order.updatedAt
         };
 
+        console.log(order.userId)
+
         if (includeUserInfo && order.userId) {
             formatted.user = {
                 id: order.userId._id || order.userId,
-                name: order.userId.name,
+                name: order.userId.profile.name,
                 email: order.userId.email
             };
         }

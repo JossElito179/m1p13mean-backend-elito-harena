@@ -21,6 +21,11 @@ const CartItemSchema = new mongoose.Schema(
             type: Number,
             required: true
         },
+        currencySnapshot: {
+            type: String,
+            default: 'MGA',
+            uppercase: true
+        },
         nameSnapshot: {
             type: String,
             required: true

@@ -35,6 +35,7 @@ class CartService {
                 productId: item.productId._id,
                 name: item.nameSnapshot,
                 price: item.priceSnapshot,
+                currency: item.currencySnapshot || 'MGA',
                 quantity: item.quantity,
                 subtotal
             });
@@ -86,6 +87,7 @@ class CartService {
                 shopId: product.shopId,
                 quantity,
                 priceSnapshot: product.price,
+                currencySnapshot: product.currency || 'MGA',
                 nameSnapshot: product.name
             });
         }

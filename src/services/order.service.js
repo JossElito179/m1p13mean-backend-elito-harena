@@ -26,7 +26,13 @@ class OrderService {
                 throw new Error('Identifiant de boutique requis');
             }
 
-            if (order.shopId.toString() !== shopId) {
+            console.log('Shop verification:', {
+                orderShopId: order.shopId.toString(),
+                providedShopId: shopId.toString(),
+                match: order.shopId.toString() === shopId.toString()
+            });
+
+            if (order.shopId.toString() !== shopId.toString()) {
                 throw new Error('Non autorisé - Cette commande ne vous appartient pas');
             }
 
@@ -176,7 +182,7 @@ class OrderService {
         }
 
         if (userRole === 'SHOP') {
-            if (!shopId || order.shopId._id.toString() !== shopId) {
+            if (!shopId || order.shopId._id.toString() !== shopId.toString()) {
                 throw new Error('Non autorisé');
             }
         }

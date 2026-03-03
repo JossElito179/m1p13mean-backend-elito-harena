@@ -25,4 +25,9 @@ router.get('/orders',
     orderController.getShopOrders
 );
 
+router.patch('/orders/:id/status',
+    authorize('SHOP'),
+    orderController.updateStatus
+);
+
 module.exports = router;

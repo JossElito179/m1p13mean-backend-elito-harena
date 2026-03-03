@@ -18,12 +18,13 @@ class OrderController {
 
             let shopId = null;
             if (role === 'SHOP') {
-                shopId = req.user.shopId;
-                if (!shopId) {
+                const shop = await shopService.findShopByUserId(userId);
+                if (!shop) {
                     return res.status(403).json({
                         error: 'Aucune boutique associée à cet utilisateur'
                     });
                 }
+                shopId = shop._id;
             }
 
             const order = await orderService.updateOrderStatus(
